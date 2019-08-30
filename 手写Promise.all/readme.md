@@ -2,9 +2,12 @@
 这里采用最原始的写法,不借助 async 和 await,只用 `new Promise() => {}`
 ```js
 function promiseAll (parmasArray) {
-  if(!Array.isArray(parmasArray)) {
-    return 'please input array parmas'
-  }
+  return new Promise(function (resolve,reject) {
+    if(!Array.isArray(parmasArray)) {
+      return reject('please input array parmas!')
+    }
+  })
+
 
 }
 ```
