@@ -91,3 +91,44 @@ class Dialog {
 }
 
 new Dialog({title: 'this is title', content: 'this is content', footer: {ok: 'ok', cancel: 'cancel'}});
+
+
+const all = async (param) => {
+    if (!Array.isArray(param)) {
+        throw ('param is not array');
+    }
+    if (param.length === 0) {
+        return [];
+    }
+    let [first, ...last] = param;
+    return [(await first), (await all(last))];
+}
+
+const p1 = (n) => new Promise((resolve, reject) => {
+    setTimeout(() => {
+        if (Number.isFinite(n)) {
+            reject('Number.isFinite(n) is true')
+        } else {
+            resolve(n)
+        }
+    }, 1000)
+})
+
+const p2 = (n) => new Promise((resolve, reject) => {
+    setTimeout(() => {
+        if (!Number.isFinite(n)) {
+            reject('Number.isFinite(n) is true')
+        } else {
+            resolve(n)
+        }
+    }, 1000)
+})
+
+let data = await all([p2(2), p1('sss')]);
+console.log(data);
+
+// 不使用 await
+/**
+ * 不用 await 的时候就需要将每个传入的 promise 都进行解析,然后把全部解析完的值都塞到一个数组中,再返回这个数组
+ * 这样的话才是完成了 promise all 的
+ */
